@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from "./components/Header";
+import Body from "./components/Body";
+import Footer from "./components/Footer";
+import appStore from "./utils/appStore";
+import { Provider, useSelector } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { WatchPage } from "./components/WatchPage";
+import MainContainer from "./components/MainContainer";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
+  const dark = useSelector((store) => store.default.dark);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main className={`${dark ? "dark" : ""}`}>
+      <div className="dark:bg-[hsl(0,0%,6%)] dark:text-white">
+        <RouterProvider router={appRoutes} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </main>
+  );
+};
 
-export default App
+const appRoutes = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainContainer />,
+    errorElement: <h1>error1</h1>,
+    children: [
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/watch",
+        element: <WatchPage />,
+      },
+    ],
+  },
+]);
+
+export default App;
