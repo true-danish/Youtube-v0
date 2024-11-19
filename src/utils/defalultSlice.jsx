@@ -5,6 +5,7 @@ const defaultSlice = createSlice({
   initialState: {
     dark: true,
     showSidebar: false,
+    videoList: [],
   },
 
   reducers: {
@@ -17,8 +18,20 @@ const defaultSlice = createSlice({
     closeSidebar(state, action) {
       state.showSidebar = false;
     },
+    addVideoList(state, action) {
+      state.videoList = state.videoList.concat(action.payload);
+    },
+    addSearchVideoList(state, action) {
+      state.videoList = [...action.payload];
+    },
   },
 });
 
 export default defaultSlice.reducer;
-export const { toggleDark, toggleSidebar, closeSidebar } = defaultSlice.actions;
+export const {
+  toggleDark,
+  toggleSidebar,
+  closeSidebar,
+  addVideoList,
+  addSearchVideoList,
+} = defaultSlice.actions;

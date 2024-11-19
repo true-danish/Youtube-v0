@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addVideoList } from "./defalultSlice";
 
 const useGetVideoList = () => {
-  const [videoList, setVideoList] = useState([]);
+  const videoList = useSelector((store) => store.default.videoList);
+  const dispatch = useDispatch();
   let nextPage = useRef("").current;
 
   useEffect(() => {
-    fetchVideoList();
+    !videoList.length && fetchVideoList();
 
     function create(delay) {
       let last = 0;
@@ -17,7 +20,6 @@ const useGetVideoList = () => {
           document.documentElement.scrollTop + window.innerHeight >=
             document.documentElement.scrollHeight - 500
         ) {
-          console.log("yes");
           last = timeNow;
           nextPage && fetchVideoList();
         }
@@ -32,7 +34,7 @@ const useGetVideoList = () => {
   }, []);
 
   async function fetchVideoList() {
-    console.log(nextPage);
+    console.log("nextPage");
     const url = `${
       import.meta.env.VITE_VIDEO_LIST_URL + import.meta.env.VITE_YOUTUBE_API_KEY
     }&pageToken=${nextPage}`;
@@ -41,10 +43,9 @@ const useGetVideoList = () => {
     const data = await resObj.json();
     console.log(data);
     nextPage = data.nextPageToken;
-    setVideoList((prev) => {
-      const newArr = data.items;
-      return [...prev, ...newArr];
-    });
+
+    const newArr = data.items;
+    dispatch(addVideoList(newArr));
   }
   return videoList;
 };

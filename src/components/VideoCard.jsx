@@ -13,18 +13,18 @@ const VideoCard = ({ videoInfo }) => {
   const month = Math.floor(day / 30);
   const year = Math.floor(month / 12);
 
-  useEffect(() => {
-    async function fetchVideoImg() {
-      const url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${
-        videoInfo.snippet.channelId
-      }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
-      const resObj = await fetch(url);
-      const data = await resObj.json();
+  // useEffect(() => {
+  //   async function fetchVideoImg() {
+  //     const url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${
+  //       videoInfo.snippet.channelId
+  //     }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
+  //     const resObj = await fetch(url);
+  //     const data = await resObj.json();
 
-      setChannelImg(data?.items[0]?.snippet?.thumbnails?.default.url);
-    }
-    fetchVideoImg();
-  }, []);
+  //     setChannelImg(data?.items[0]?.snippet?.thumbnails?.default.url);
+  //   }
+  //   fetchVideoImg();
+  // }, []);
 
   return (
     <div
@@ -46,7 +46,7 @@ const VideoCard = ({ videoInfo }) => {
            gap-2`}
       >
         <div className="w-10 h-10 overflow-hidden rounded-full bg-slate-300">
-          <img src={channelImg} alt="channel Image" className="w-full h-full" />
+          {/* <img src={channelImg} alt="channel Image" className="w-full h-full" /> */}
         </div>
 
         <div>

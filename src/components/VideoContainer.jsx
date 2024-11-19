@@ -12,10 +12,9 @@ const VideoContainer = () => {
         videoList.map((video) => {
           return (
             <Link
-              key={video.id}
+              key={video.etag || video.id}
               state={{
-                category: video.snippet.categoryId,
-                description: video.snippet.description,
+                video,
               }}
               to={"/watch?v=" + video.id}
             >
