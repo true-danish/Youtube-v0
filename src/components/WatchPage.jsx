@@ -1,59 +1,12 @@
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Sidebar2 from "./Sidebar2";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { closeSidebar } from "../utils/defalultSlice";
+
 import VideoCard from "./VideoCard";
+import useWatchPage from "../utils/useWatchPage";
+import CommentSection from "./CommentSection";
 
 export const WatchPage = () => {
-  console.log("watch page");
-  let [searchParams, setSearchParams] = useSearchParams();
-  const [videoInfo, setVideoInfo] = useState(useLocation().state.video);
-  const id = videoInfo?.id;
-  const { description, categoryId } = videoInfo?.snippet;
-
-  console.log(id, categoryId);
-
-  const [category, setCategory] = useState([]);
-  let v = searchParams.get("v");
-  if (v.includes("object")) v = "";
-  console.log(v);
-  const sidebar = useSelector((store) => store.default.showSidebar);
-  const dispatch = useDispatch();
-
-  async function fetchSimilarVideo() {
-    console.log(categoryId);
-    const url = `${
-      import.meta.env.VITE_VIDEO_LIST_URL + import.meta.env.VITE_YOUTUBE_API_KEY
-    }&videoCategoryId=${categoryId}`;
-    console.log(url);
-    const resObj = await fetch(url);
-    const data = await resObj.json();
-    console.log(data);
-    setCategory(data.items);
-  }
-
-  async function doThis() {
-    const url = `${
-      "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=" +
-      import.meta.env.VITE_YOUTUBE_API_KEY
-    }&id=${id.videoId}`;
-    const resObj = await fetch(url);
-    const data = await resObj.json();
-    const result = data.items.filter((e) => e.id === id.videoId);
-    console.log(result[0]);
-    setVideoInfo(result[0]);
-  }
-
-  useEffect(() => {
-    dispatch(closeSidebar());
-    if (categoryId) fetchSimilarVideo();
-    else {
-      doThis();
-    }
-    window.scrollTo(0, 0);
-  }, [videoInfo]);
-
+  const { category, description, sidebar, v, id } = useWatchPage();
   return (
     <main className="mt-24 md:mt-14 p-8 dark:bg-[hsl(0,0%,6%)] dark:text-white grid grid-cols-[3fr_1fr]  max-md:grid-cols-1 ">
       {sidebar && <Sidebar2 />}
@@ -86,19 +39,8 @@ export const WatchPage = () => {
           </div>
         ))}
       </section>
-      <section className="bg-orange-500 ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque maiores
-        dolores unde tempore est rem accusamus numquam modi nobis eius dolor
-        voluptatibus ducimus quaerat nesciunt, molestiae aliquam officia
-        assumenda amet recusandae fuga, quasi vero doloribus nulla et. Sunt
-        tenetur nisi laborum veritatis, iusto officia perferendis aspernatur
-        velit fuga similique omnis eius aliquam, dignissimos amet rem voluptate
-        eveniet accusamus exercitationem sed ratione, doloribus quae praesentium
-        perspiciatis? Eveniet, velit itaque voluptas facere atque doloribus.
-        Quidem, sapiente iusto veniam illum repellat nisi ratione provident
-        libero suscipit est saepe nobis voluptas dolor quisquam repudiandae quia
-        in tempora, odit aut vitae adipisci voluptates unde laboriosam!
-      </section>
+      {/* Comments section */}
+      <CommentSection />
     </main>
   );
 };

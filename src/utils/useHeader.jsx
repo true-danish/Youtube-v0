@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addSearchVideoList, toggleDark } from "./defalultSlice";
+import { addSearchVideoList, toggleDark, toggleSidebar } from "./defalultSlice";
+import { useNavigate } from "react-router-dom";
 
 const useHeader = () => {
   const [suggestion, setSuggestion] = useState(null);
   const input = useRef(null);
   const suggestContainer = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let fired = false;
 
   async function handleSubmit(e) {
@@ -24,6 +26,7 @@ const useHeader = () => {
       if (e.id.videoId) return true;
     });
     dispatch(addSearchVideoList(newArr));
+    navigate("/");
   }
 
   function searchQuery(e) {
@@ -61,6 +64,7 @@ const useHeader = () => {
         input.current.value
     );
     const data = await resObj.json();
+
     console.log(data);
     setSuggestion(data[1]);
   }
