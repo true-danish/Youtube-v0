@@ -123,8 +123,8 @@ const CommentSection = () => {
     },
   ];
   return (
-    <section className="bg-red- py-4 px-2">
-      <h1 className="font-bold text-2xl my-6">Comments</h1>
+    <section className="bg-red- py-4 px-2 overflow-x-scroll ">
+      <h1 className="font-bold text-2xl my-6">Comments:</h1>
       <CommentList listData={commentsData} />
     </section>
   );
